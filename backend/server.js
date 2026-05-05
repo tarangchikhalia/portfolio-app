@@ -231,6 +231,58 @@ app.get('/api/tags', (_req, res) => {
 });
 
 /**
+ * GET /feed.xml
+ * RSS 2.0 feed of all signals, newest first.
+ */
+app.get('/feed.xml', (_req, res) => {
+  const SITE = process.env.SITE_URL || 'https://tarangchikhalia.com';
+
+  const escape = s => String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  const items = POSTS_CACHE.map(post => {
+    const url     = `${SITE}/post.html?slug=${encodeURIComponent(post.slug)}`;
+    const pubDate = new Date(post.date).toUTCString();
+    const tags    = post.tags.map(t => `    <category>${escape(t)}</category>`).join('\n');
+    return `  <item>
+    <title>${escape(post.title)}</title>
+    <link>${url}</link>
+    <guid isPermaLink="true">${url}</guid>
+    <pubDate>${pubDate}</pubDate>
+    <description>${escape(post.excerpt)}</description>
+    <content:encoded><![CDATA[${post.html}]]></content:encoded>
+${tags}
+  </item>`;
+  }).join('\n');
+
+  const lastBuild = POSTS_CACHE.length
+    ? new Date(POSTS_CACHE[0].date).toUTCString()
+    : new Date().toUTCString();
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/modules/content/"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Signals · Tarang Chikhalia</title>
+    <link>${SITE}</link>
+    <description>Half-formed ideas, post-mortems, and longer thinking on systems, software, and the strange spaces between.</description>
+    <language>en</language>
+    <lastBuildDate>${lastBuild}</lastBuildDate>
+    <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>`;
+
+  res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, max-age=900'); // 15 min
+  res.send(xml);
+});
+
+/**
  * POST /api/reload
  * Re-scan the posts directory without restarting the server.
  * Protected by a shared secret if RELOAD_TOKEN env var is set; otherwise open
