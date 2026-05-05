@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Signal · Tarang Chikhalia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Status Bar -->
+<div class="status-bar">
+  <div class="dot"></div>
+  <span>SYS:ONLINE</span>
+  <span class="sep">//</span>
+  <span>NODE:TARANG.IO</span>
+  <span class="sep">//</span>
+  <span>UPTIME:∞</span>
+  <span class="right">LAT 45.4° N · LONG 75.7° W</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <span class="tt-track">
+      <span class="tt-icon tt-sun">☀</span>
+      <span class="tt-icon tt-moon">☾</span>
+      <span class="tt-thumb"></span>
+    </span>
+    <span class="tt-label" id="themeLabel">DARK</span>
+  </button>
+</div>
+
+<!-- Nav -->
+<nav class="primary">
+  <a href="/" class="brand">tarang<span>.</span>chikhalia</a>
+  <ul>
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#projects">Projects</a></li>
+    <li><a href="/#blog">Signals</a></li>
+    <li><a href="/#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main class="post-page">
+  <div class="post-page-inner">
+
+    <a href="/#blog" class="post-back">← Back to Signals</a>
+
+    <div id="postLoading" class="post-page-status">Loading signal…</div>
+    <div id="postError" class="post-page-status error" style="display:none">Could not load this post.</div>
+
+    <article id="postContent" style="display:none">
+      <div class="post-page-meta" id="postMeta"></div>
+      <h1 class="post-page-title" id="postTitle"></h1>
+      <div class="post-page-body" id="postBody"></div>
+    </article>
+
+  </div>
+</main>
+
+<footer>
+  <span class="left">© 2026 Tarang · Engineered, hand-tuned, no template</span>
+  <span>v1.1 · last build: today</span>
+</footer>
+
+<script src="post.js"></script>
+</body>
+</html>

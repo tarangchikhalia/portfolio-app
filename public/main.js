@@ -265,8 +265,11 @@ function renderPosts(data) {
         document.getElementById('blog').scrollIntoView({ behavior: 'smooth', block: 'start' });
       };
     });
-    el.querySelector('.post-title').onclick = () => openReader(post.slug);
-    el.onclick = () => openReader(post.slug);
+    el.querySelector('.post-title').onclick = (e) => {
+      e.stopPropagation();
+      window.open('/post.html?slug=' + encodeURIComponent(post.slug), '_blank');
+    };
+    el.onclick = () => window.open('/post.html?slug=' + encodeURIComponent(post.slug), '_blank');
     blogList.appendChild(el);
   });
 
@@ -279,45 +282,6 @@ function renderPosts(data) {
     },
   });
 }
-
-async function openReader(slug) {
-  const reader     = document.getElementById('reader');
-  const readerMeta = document.getElementById('readerMeta');
-  const readerTitle= document.getElementById('readerTitle');
-  const readerBody = document.getElementById('readerBody');
-
-  readerMeta.textContent  = 'LOADING…';
-  readerTitle.textContent = '';
-  readerBody.innerHTML    = '';
-  reader.classList.add('open');
-  document.body.style.overflow = 'hidden';
-
-  try {
-    const r = await fetch('/api/posts/' + encodeURIComponent(slug));
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const post = await r.json();
-    readerMeta.textContent  = `${formatDate(post.date)} · ${post.readTime} · ${(post.tags||[]).map(t => '#'+t).join(' ')}`;
-    readerTitle.textContent = post.title;
-    readerBody.innerHTML    = post.html;
-  } catch (err) {
-    console.error('[reader]', err);
-    readerMeta.textContent = 'ERROR';
-    readerBody.innerHTML   = '<p>Could not load this post.</p>';
-  }
-}
-
-function closeReader() {
-  document.getElementById('reader').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-document.getElementById('readerClose').onclick = closeReader;
-document.getElementById('reader').onclick = (e) => {
-  if (e.target.id === 'reader') closeReader();
-};
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeReader();
-});
 
 // Initial load
 fetchTags().then(fetchPosts);

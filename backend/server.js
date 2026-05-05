@@ -247,9 +247,10 @@ app.post('/api/reload', (req, res) => {
 });
 
 // ---------- static frontend ----------
+const isDev = process.env.NODE_ENV !== 'production';
 app.use(express.static(PUBLIC_DIR, {
   extensions: ['html'],
-  maxAge: '1h',
+  maxAge: isDev ? 0 : '1h',
 }));
 
 // SPA-ish fallback for any non-API route.
