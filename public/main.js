@@ -109,75 +109,37 @@ function paginate(arr, page, size) {
 }
 
 // ============ PROJECTS ============
-const PROJECTS = [
-  {
-    n: '001',
-    title: 'Multi-tenant <em>Notification Microservice</em>',
-    desc: 'A queue-driven notification service that routes events to email, Slack, and Teams. Designed for tenant isolation, retry semantics, and predictable backpressure under load.',
-    tags: ['microservices', 'queues', 'multi-tenant', 'backend'],
-    status: 'live', statusLabel: '● live', year: '2025',
-  },
-  {
-    n: '002',
-    title: 'Local <em>Code Search Engine</em>',
-    desc: 'A Sourcegraph-style code search built locally with tree-sitter and tokenization. Symbol-aware, fast on large repos, and works entirely offline.',
-    tags: ['tree-sitter', 'search', 'indexing', 'developer-tools'],
-    status: 'exp', statusLabel: '◇ research', year: '2025',
-  },
-  {
-    n: '003',
-    title: 'Enterprise <em>AI Environment Stack</em>',
-    desc: 'A self-hostable bundle stitching OpenWebUI, Google ADK, Milvus, Langfuse, and Portainer into a coherent platform for internal AI workloads — observable, governable, deployable.',
-    tags: ['llm-infra', 'milvus', 'observability', 'self-hosted'],
-    status: 'live', statusLabel: '● live', year: '2025',
-  },
-  {
-    n: '004',
-    title: 'News, <em>TikTok-style</em>',
-    desc: 'An iOS news reader that ingests RSS into a swipeable, vertical feed. Supabase backend, push for breaking stories, designed for one-thumb reading.',
-    tags: ['ios', 'supabase', 'rss', 'consumer'],
-    status: 'exp', statusLabel: '◇ beta', year: '2024',
-  },
-  {
-    n: '005',
-    title: 'Universal <em>Shopping Cart</em>',
-    desc: 'A browser extension that unifies carts across stores into a single, comparable view. One list, one budget, fewer abandoned tabs.',
-    tags: ['browser-extension', 'e-commerce', 'utility'],
-    status: 'exp', statusLabel: '◇ beta', year: '2024',
-  },
-  {
-    n: '006',
-    title: '<em>mypwd</em> — Terminal Password Manager',
-    desc: 'A minimal, scriptable password manager that lives in the terminal. Open-sourced on GitHub for engineers who never want to leave the keyboard.',
-    tags: ['cli', 'security', 'open-source'],
-    status: 'live', statusLabel: '● live', year: '2024',
-  },
-];
-
+let ALL_PROJECTS = [];
 let projectsPage = 1;
 
 function renderProjects() {
   const list = document.getElementById('projectsList');
-  const { items, page, pages } = paginate(PROJECTS, projectsPage, PAGE_SIZE);
+  const { items, page, pages } = paginate(ALL_PROJECTS, projectsPage, PAGE_SIZE);
   projectsPage = page;
 
-  list.innerHTML = items.map(p => `
-    <div class="project">
-      <div class="project-num">${p.n}</div>
-      <div class="project-body">
-        <div class="project-title">${p.title}</div>
-        <div class="project-desc">${escapeHtml(p.desc)}</div>
-        <div class="project-tags">
-          ${p.tags.map(t => `<span class="project-tag">${escapeHtml(t)}</span>`).join('')}
+  list.innerHTML = items.map(p => {
+    const hasLink = p.external_link && p.external_link.trim() !== '';
+    const titleHtml = hasLink
+      ? `<a class="project-title project-title-link" href="${escapeHtml(p.external_link)}" target="_blank" rel="noopener noreferrer">${p.title}</a>`
+      : `<div class="project-title">${p.title}</div>`;
+    return `
+      <div class="project${hasLink ? ' project-clickable' : ''}">
+        <div class="project-num">${p.n}</div>
+        <div class="project-body">
+          ${titleHtml}
+          <div class="project-desc">${escapeHtml(p.desc)}</div>
+          <div class="project-tags">
+            ${p.tags.map(t => `<span class="project-tag">${escapeHtml(t)}</span>`).join('')}
+          </div>
         </div>
+        <div class="project-meta">
+          <span class="status ${p.status}">${p.statusLabel}</span>
+          <span class="year">${p.year}</span>
+        </div>
+        <div class="project-arrow">${hasLink ? '↗' : ''}</div>
       </div>
-      <div class="project-meta">
-        <span class="status ${p.status}">${p.statusLabel}</span>
-        <span class="year">${p.year}</span>
-      </div>
-      <div class="project-arrow">↗</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   renderPagination(document.getElementById('projectsPagination'), {
     page, pages,
@@ -189,7 +151,20 @@ function renderProjects() {
   });
 }
 
-renderProjects();
+async function fetchProjects() {
+  try {
+    const r = await fetch('/api/projects');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    ALL_PROJECTS = data.items || [];
+  } catch (err) {
+    console.error('[projects] failed to load:', err);
+    ALL_PROJECTS = [];
+  }
+  renderProjects();
+}
+
+fetchProjects();
 
 // ============ BLOG (API-DRIVEN) ============
 let activeTag = 'all';

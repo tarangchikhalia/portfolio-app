@@ -30,9 +30,10 @@ import { marked } from 'marked';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-const POSTS_DIR  = path.join(__dirname, 'posts');
-const PUBLIC_DIR = path.join(__dirname, '..', 'public');
-const PORT       = process.env.PORT || 3000;
+const POSTS_DIR    = path.join(__dirname, 'posts');
+const PROJECTS_FILE = path.join(__dirname, 'projects.json');
+const PUBLIC_DIR   = path.join(__dirname, '..', 'public');
+const PORT         = process.env.PORT || 3000;
 
 // ---------- markdown configuration ----------
 marked.setOptions({
@@ -194,6 +195,21 @@ app.get('/api/posts/:slug', (req, res) => {
     return res.status(404).json({ error: 'post not found' });
   }
   res.json(post);
+});
+
+/**
+ * GET /api/projects
+ * Returns the full projects list from projects.json.
+ */
+app.get('/api/projects', (_req, res) => {
+  try {
+    const raw = fs.readFileSync(PROJECTS_FILE, 'utf8');
+    const projects = JSON.parse(raw);
+    res.json({ items: projects });
+  } catch (err) {
+    console.error('[projects] failed to load:', err.message);
+    res.status(500).json({ error: 'could not load projects' });
+  }
 });
 
 /**
