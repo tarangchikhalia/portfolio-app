@@ -12,8 +12,8 @@
   --ink-dim: #8a8a8a;
   --ink-faint: #4a4a4a;
   --rule: #1f1f1f;
-  --accent: #d4ff3a;       /* signal green-yellow */
-  --accent-dim: #8aa61f;
+  --accent: #67e8f9;       /* cyan */
+  --accent-dim: #1e8ea6;
   --accent-ink: #0a0a0a;   /* text color on accent surfaces */
   --warn: #ff5e3a;
   --cyan: #67e8f9;
@@ -34,11 +34,11 @@
   --ink-dim: #5c5c5c;
   --ink-faint: #a8a39a;
   --rule: #d8d2c3;
-  --accent: #2d5016;       /* deep forest — print-press feel, sharp on cream */
-  --accent-dim: #4a7a2a;
+  --accent: #0e7490;       /* deep cyan — sharp on warm cream */
+  --accent-dim: #155e75;
   --accent-ink: #f4f1ea;
   --warn: #b8351c;
-  --cyan: #1d6b7a;
+  --cyan: #0e7490;
   --grid: rgba(0,0,0,0.035);
   --grain-opacity: 0.18;
   --grain-blend: multiply;
