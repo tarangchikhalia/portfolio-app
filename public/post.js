@@ -50,7 +50,46 @@ async function loadPost() {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const post = await r.json();
 
-    document.title = post.title + ' · Tarang Chikhalia';
+    const pageUrl  = window.location.origin + '/post.html?slug=' + encodeURIComponent(slug);
+    const pageTitle = post.title + ' · Tarang Chikhalia';
+
+    document.title = pageTitle;
+
+    const setMeta = (sel, val) => {
+      const el = document.querySelector(sel);
+      if (el) el.setAttribute(el.hasAttribute('content') ? 'content' : 'href', val);
+    };
+    setMeta('meta[name="description"]',          post.excerpt);
+    setMeta('meta[property="og:title"]',         pageTitle);
+    setMeta('meta[property="og:description"]',   post.excerpt);
+    setMeta('meta[property="og:url"]',           pageUrl);
+    setMeta('meta[property="article:published_time"]', post.date);
+    setMeta('meta[name="twitter:title"]',        pageTitle);
+    setMeta('meta[name="twitter:description"]',  post.excerpt);
+
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt,
+      datePublished: post.date,
+      url: pageUrl,
+      keywords: (post.tags || []).join(', '),
+      author: {
+        '@type': 'Person',
+        name: 'Tarang Chikhalia',
+        url: 'https://tarangchikhalia.com',
+      },
+      publisher: {
+        '@type': 'Person',
+        name: 'Tarang Chikhalia',
+        url: 'https://tarangchikhalia.com',
+      },
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(ld);
+    document.head.appendChild(script);
 
     document.getElementById('postMeta').textContent =
       `${formatDate(post.date)} · ${post.readTime} · ${(post.tags || []).map(t => '#' + t).join(' ')}`;

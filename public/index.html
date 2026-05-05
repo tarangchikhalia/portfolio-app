@@ -3,12 +3,65 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tarang Chikhalia</title>
+<title>Tarang Chikhalia — Software Engineer</title>
+<meta name="description" content="Software engineer specializing in distributed backends, AI infrastructure, and systems design. Writing about software, systems, and the spaces between.">
+<meta name="author" content="Tarang Chikhalia">
+<link rel="canonical" href="https://tarangchikhalia.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tarangchikhalia.com/">
+<meta property="og:site_name" content="Tarang Chikhalia">
+<meta property="og:title" content="Tarang Chikhalia — Software Engineer">
+<meta property="og:description" content="Software engineer specializing in distributed backends, AI infrastructure, and systems design.">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@tarangchikhalia">
+<meta name="twitter:title" content="Tarang Chikhalia — Software Engineer">
+<meta name="twitter:description" content="Software engineer specializing in distributed backends, AI infrastructure, and systems design.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <link rel="alternate" type="application/rss+xml" title="Signals · Tarang Chikhalia" href="/feed.xml">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://tarangchikhalia.com/#person",
+      "name": "Tarang Chikhalia",
+      "url": "https://tarangchikhalia.com",
+      "jobTitle": "Software Engineer",
+      "description": "Software engineer specializing in distributed backends, AI infrastructure, and systems design.",
+      "sameAs": [
+        "https://github.com/tarangchikhalia",
+        "https://www.linkedin.com/in/tarangchikhalia/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tarangchikhalia.com/#website",
+      "url": "https://tarangchikhalia.com",
+      "name": "Tarang Chikhalia",
+      "author": { "@id": "https://tarangchikhalia.com/#person" }
+    },
+    {
+      "@type": "Blog",
+      "@id": "https://tarangchikhalia.com/#blog",
+      "name": "Signals",
+      "description": "Half-formed ideas, post-mortems, and longer thinking on systems, software, and the strange spaces between.",
+      "url": "https://tarangchikhalia.com/#blog",
+      "author": { "@id": "https://tarangchikhalia.com/#person" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -71,7 +124,7 @@
   </section>
 
   <!-- ============ ABOUT ============ -->
-  <section id="about" class="about">
+  <section id="about" class="about" aria-labelledby="about-heading">
     <div class="section-label">
       <span>About / Bio.txt</span>
       <span class="num">01 / 04</span>
@@ -79,7 +132,7 @@
 
     <div class="about-grid">
       <div>
-        <h2>Engineer by trade,<br><em>generalist</em> by curiosity.</h2>
+        <h2 id="about-heading">Engineer by trade,<br><em>generalist</em> by curiosity.</h2>
         <p>
           I build software for a living and think about it for fun. My focus
           sits at the intersection of <em>system design</em>, <em>microservices</em>,
@@ -111,7 +164,7 @@
   </section>
 
   <!-- ============ PROJECTS ============ -->
-  <section id="projects">
+  <section id="projects" aria-label="Selected projects">
     <div class="section-label">
       <span>Projects / Selected.work</span>
       <span class="num">02 / 04</span>
@@ -123,7 +176,7 @@
   </section>
 
   <!-- ============ BLOG ============ -->
-  <section id="blog">
+  <section id="blog" aria-labelledby="blog-heading">
     <div class="section-label">
       <span>Signals / Field.notes</span>
       <span class="num">03 / 04</span>
@@ -131,7 +184,7 @@
 
     <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
       <div>
-        <h2 style="font-family:var(--serif); font-weight:300; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.03em;">
+        <h2 id="blog-heading" style="font-family:var(--serif); font-weight:300; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.03em;">
           Notes from the <em style="color:var(--accent); font-weight:400;">workbench</em>.
         </h2>
         <p style="color:var(--ink-dim); margin-top:12px; max-width:560px; font-family:var(--serif); font-size:16px;">
@@ -157,14 +210,14 @@
   </section>
 
   <!-- ============ CONTACT ============ -->
-  <section id="contact" class="contact">
+  <section id="contact" class="contact" aria-labelledby="contact-heading">
     <div class="contact-inner">
       <div class="section-label">
         <span>Contact / Open.channels</span>
         <span class="num">04 / 04</span>
       </div>
 
-      <h2>
+      <h2 id="contact-heading">
         Let's <em>talk</em><br>
         <span class="stroke">about systems.</span>
       </h2>
